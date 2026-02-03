@@ -35,43 +35,11 @@ const CircularGallery = React.forwardRef<HTMLDivElement, CircularGalleryProps>(
     ref
   ) => {
     const [rotation, setRotation] = useState(0);
-    const [isScrolling, setIsScrolling] = useState(false);
-    const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const animationFrameRef = useRef<number | null>(null);
 
     useEffect(() => {
-      const handleScroll = () => {
-        setIsScrolling(true);
-        if (scrollTimeoutRef.current) {
-          clearTimeout(scrollTimeoutRef.current);
-        }
-
-        const scrollableHeight =
-          document.documentElement.scrollHeight - window.innerHeight;
-        const scrollProgress =
-          scrollableHeight > 0 ? window.scrollY / scrollableHeight : 0;
-        const scrollRotation = scrollProgress * 360;
-        setRotation(scrollRotation);
-
-        scrollTimeoutRef.current = setTimeout(() => {
-          setIsScrolling(false);
-        }, 150);
-      };
-
-      window.addEventListener("scroll", handleScroll, { passive: true });
-      return () => {
-        window.removeEventListener("scroll", handleScroll);
-        if (scrollTimeoutRef.current) {
-          clearTimeout(scrollTimeoutRef.current);
-        }
-      };
-    }, []);
-
-    useEffect(() => {
       const autoRotate = () => {
-        if (!isScrolling) {
-          setRotation((prev) => prev + autoRotateSpeed);
-        }
+        setRotation((prev) => prev + autoRotateSpeed);
         animationFrameRef.current = requestAnimationFrame(autoRotate);
       };
 
@@ -82,7 +50,7 @@ const CircularGallery = React.forwardRef<HTMLDivElement, CircularGalleryProps>(
           cancelAnimationFrame(animationFrameRef.current);
         }
       };
-    }, [isScrolling, autoRotateSpeed]);
+    }, [autoRotateSpeed]);
 
     const anglePerItem = 360 / items.length;
 
@@ -221,8 +189,8 @@ export function ResultsOrbitSection() {
       <div className="mt-16 h-[440px] md:h-[640px]">
         <CircularGallery
           items={items}
-          radius={isMobile ? 420 : 560}
-          autoRotateSpeed={isMobile ? 0.03 : 0.02}
+          radius={isMobile ? 380 : 520}
+          autoRotateSpeed={0.6}
           itemClassName={isMobile ? "w-[220px] h-[300px]" : "w-[300px] h-[400px]"}
         />
       </div>
