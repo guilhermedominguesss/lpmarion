@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export interface GalleryItem {
   common: string;
@@ -18,10 +19,21 @@ interface CircularGalleryProps extends React.HTMLAttributes<HTMLDivElement> {
   items: GalleryItem[];
   radius?: number;
   autoRotateSpeed?: number;
+  itemClassName?: string;
 }
 
 const CircularGallery = React.forwardRef<HTMLDivElement, CircularGalleryProps>(
-  ({ items, className, radius = 560, autoRotateSpeed = 0.02, ...props }, ref) => {
+  (
+    {
+      items,
+      className,
+      radius = 560,
+      autoRotateSpeed = 0.02,
+      itemClassName,
+      ...props
+    },
+    ref
+  ) => {
     const [rotation, setRotation] = useState(0);
     const [isScrolling, setIsScrolling] = useState(false);
     const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -107,13 +119,11 @@ const CircularGallery = React.forwardRef<HTMLDivElement, CircularGalleryProps>(
                 key={`${item.common}-${i}`}
                 role="group"
                 aria-label={item.common}
-                className="absolute w-[300px] h-[400px]"
+                className={cn("absolute", itemClassName)}
                 style={{
-                  transform: `rotateY(${itemAngle}deg) translateZ(${radius}px)`,
+                  transform: `translate(-50%, -50%) rotateY(${itemAngle}deg) translateZ(${radius}px)`,
                   left: "50%",
                   top: "50%",
-                  marginLeft: "-150px",
-                  marginTop: "-200px",
                   opacity,
                   transition: "opacity 0.3s linear",
                 }}
@@ -149,6 +159,7 @@ const CircularGallery = React.forwardRef<HTMLDivElement, CircularGalleryProps>(
 CircularGallery.displayName = "CircularGallery";
 
 export function ResultsOrbitSection() {
+  const isMobile = useIsMobile();
   const image1 = "/resultado-1.jpeg";
   const image2 = "/resultado-2.jpeg";
   const image3 = "/resultado-3.jpeg";
@@ -207,8 +218,13 @@ export function ResultsOrbitSection() {
         </div>
       </div>
 
-      <div className="mt-16 h-[520px] md:h-[640px]">
-        <CircularGallery items={items} />
+      <div className="mt-16 h-[440px] md:h-[640px]">
+        <CircularGallery
+          items={items}
+          radius={isMobile ? 420 : 560}
+          autoRotateSpeed={isMobile ? 0.03 : 0.02}
+          itemClassName={isMobile ? "w-[220px] h-[300px]" : "w-[300px] h-[400px]"}
+        />
       </div>
     </section>
   );
