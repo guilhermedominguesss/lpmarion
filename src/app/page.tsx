@@ -128,6 +128,11 @@ export default function LandingPage() {
                     title: "Lipedema",
                     desc: "Abordagem profunda, respeitosa e terapêutica.",
                   },
+                  {
+                    title: "Remodulação Intestinal",
+                    desc:
+                      "O equilíbrio intestinal está diretamente relacionado à forma como o corpo funciona e se expressa, inclusive na pele. Aqui, o cuidado é feito por meio de um protocolo personalizado de suporte intestinal e estilo de vida.",
+                  },
                 ].map((item, i) => (
                   <div
                     key={i}
