@@ -249,6 +249,7 @@ export default function LandingPage() {
                 "Prescrição personalizada de nutracêuticos manipulados",
                 "Terapia manual integrativa avançada",
                 "Acompanhamento metabólico estético",
+                "Análise Integrativa de Exames Bioquímicos",
               ].map((tech, i) => (
                 <div
                   key={i}
